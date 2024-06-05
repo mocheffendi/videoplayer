@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class VideoPlaylistWidget extends StatefulWidget {
   final Map<String, Map<String, String>> videoMap;
@@ -12,6 +13,7 @@ class VideoPlaylistWidget extends StatefulWidget {
 
 class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
   late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
   String? _currentVideoUrl;
   bool _isLoading = true;
 
@@ -24,6 +26,12 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
 
   void _initializePlayer(String url, {bool autoPlay = false}) {
     _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(url));
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      autoPlay: autoPlay,
+      looping: false,
+    );
+
     _videoPlayerController.initialize().then((_) {
       setState(() {
         _isLoading = false;
@@ -36,6 +44,7 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
 
   void _disposePlayer() {
     _videoPlayerController.dispose();
+    _chewieController.dispose();
   }
 
   void _loadNextVideo(String url) {
@@ -63,7 +72,9 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
               : AspectRatio(
                   key: ValueKey<String>(_currentVideoUrl!),
                   aspectRatio: _videoPlayerController.value.aspectRatio,
-                  child: VideoPlayer(_videoPlayerController),
+                  child: Chewie(
+                    controller: _chewieController,
+                  ),
                 ),
         ),
         Align(
@@ -88,7 +99,7 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
                       child: Text(option),
                     ),
                   );
-                })
+                }),
               ],
             ),
           ),
