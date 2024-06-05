@@ -1,9 +1,8 @@
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class VideoPlaylistWidget extends StatefulWidget {
   final Map<String, Map<String, dynamic>> videoMap;
@@ -20,7 +19,8 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
   bool _isLoading = true;
   final List<String> _choices = [];
   final String _googleSheetUrl =
-      'https://script.google.com/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec'; // Replace with your Google Apps Script URL
+      'YOUR_GOOGLE_SHEET_WEB_APP_URL'; // Replace with your Google Apps Script URL
+  final Dio _dio = Dio();
 
   @override
   void initState() {
@@ -47,88 +47,29 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
 
   Future<void> _submitChoices() async {
     try {
-      log('Submitting choices');
-      log('$_choices');
-      log(jsonEncode(<String, dynamic>{
-        'choices': _choices,
-      }));
-
-      // final response3 =
-      //     // await http.get(Uri.parse("https://api.chucknorris.io/jokes/random"));
-      //     await http.get(Uri.parse(
-      //         "https://script.google.com/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec"));
-
-      // log(response3.body);
-
-      // if (response3.statusCode == 200) {
-      //   return jsonDecode(response3.body);
-      // } else {
-      //   log('Failed to fetch joke');
-      // }
-
-      // var uri = Uri.https('https://script.google.com',
-      //     '/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec');
-
-      // final response2 = await http.get(
-      //   uri,
-      //   headers: {
-      //     "Access-Control-Allow-Origin":
-      //         "*", // Required for CORS support to work
-      //     "Access-Control-Allow-Credentials":
-      //         'true', // Required for cookies, authorization headers with HTTPS
-      //     "Access-Control-Allow-Headers":
-      //         "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
-      //     "Access-Control-Allow-Methods": "POST, OPTIONS"
-      //   },
-      //   // body: jsonEncode(<String, dynamic>{
-      //   //   'choices': ["Pak Lesley", "Hukum Perdata", "Gono Gini"],
-      //   // }),
-      // );
-
-      // log('Response status: ${response2.statusCode}');
-      // log('Response body: ${response2.body}');
-
-      // final response1 = await http.post(
-      //   Uri.parse(
-      //       'https://script.google.com/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec'),
-      //   headers: <String, String>{
-      //     'Content-Type': 'application/json; charset=UTF-8',
-      //   },
-      //   body: jsonEncode(<String, dynamic>{
-      //     'choices': ["Pak Lesley", "Hukum Perdata", "Gono Gini"],
-      //   }),
-      // );
-
-      // debugPrint('terpanggil');
-      // log('Response status: ${response1.statusCode}');
-      // log('Response body: ${response1.body}');
-
-      final response = await http.post(
-        Uri.parse(_googleSheetUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'choices': _choices,
-        }),
+      final response = await _dio.post(
+        'https://cors-anywhere.herokuapp.com/$_googleSheetUrl',
+        options: Options(
+          headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        ),
+        data: jsonEncode(<String, dynamic>{'choices': _choices}),
       );
 
-      log('Response status: ${response.statusCode}');
-      log('Response body: ${response.body}');
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.data}');
 
       if (response.statusCode == 200) {
         // Successfully sent data to Google Sheets
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Choices submitted successfully!')));
       } else {
-        log('failed');
         // Failed to send data to Google Sheets
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Failed to submit choices.')));
       }
     } catch (e) {
       // Error occurred while sending data to Google Sheets
-      log('Error: $e');
+      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error submitting choices: $e')));
     }

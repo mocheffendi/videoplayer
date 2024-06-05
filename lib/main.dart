@@ -18,35 +18,52 @@ class MyApp extends StatelessWidget {
 
 class VideoPlaylistScreen extends StatelessWidget {
   final Map<String, Map<String, dynamic>> videoMap = {
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4': {
-      'question': 'Please choose an option:',
+    'https://videos.pexels.com/video-files/4065222/4065222-hd_1080_2048_25fps.mp4':
+        {
+      'question':
+          'Selamat Datang di kantor MSA, saya Hanny, virtual assiisten bapak Lesley, ada yang bisa saya bantu?:',
       'answers': {
-        'Option 1':
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-        'Option 2':
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/elephant.mp4',
+        'Saya sudah punya jadwal janjian':
+            'https://videos.pexels.com/video-files/4040918/4040918-hd_1080_2048_25fps.mp4',
+        'Saya pertama kali datang di sini':
+            'https://videos.pexels.com/video-files/5512609/5512609-hd_1080_1920_25fps.mp4',
       },
       'isFinal': false,
     },
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4':
+    'https://videos.pexels.com/video-files/4040918/4040918-hd_1080_2048_25fps.mp4':
         {
-      'question': 'What do you want to see next?',
+      'question': 'Ingin bertemu dengan siapa',
       'answers': {
-        'Option A':
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-        'Option B':
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/elephant.mp4',
+        'Janjian dengan Bu Siti':
+            'https://videos.pexels.com/video-files/5512609/5512609-hd_1080_1920_25fps.mp4',
+        'Janjian dengan Pak Samuel':
+            'https://videos.pexels.com/video-files/5512609/5512609-hd_1080_1920_25fps.mp4',
+        'Janjian dengan Pak Doddy':
+            'https://videos.pexels.com/video-files/5512609/5512609-hd_1080_1920_25fps.mp4',
       },
       'isFinal': false,
     },
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/elephant.mp4':
+    'https://videos.pexels.com/video-files/5512609/5512609-hd_1080_1920_25fps.mp4':
         {
-      'question': 'Choose your favorite animal:',
+      'question': 'Persoalan apa yang bisa kami bantu',
       'answers': {
-        'Option X':
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-        'Option Y':
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+        'Persoalan Hukum Perdata':
+            'https://videos.pexels.com/video-files/11856385/11856385-hd_1080_1920_25fps.mp4',
+        'Persoalan Hukum Pidana':
+            'https://videos.pexels.com/video-files/11856385/11856385-hd_1080_1920_25fps.mp4',
+        'Persoalan Administratif Hukum':
+            'https://videos.pexels.com/video-files/11856385/11856385-hd_1080_1920_25fps.mp4',
+        'Konsultasi Hukum':
+            'https://videos.pexels.com/video-files/11856385/11856385-hd_1080_1920_25fps.mp4',
+      },
+      'isFinal': false,
+    },
+    'https://videos.pexels.com/video-files/11856385/11856385-hd_1080_1920_25fps.mp4':
+        {
+      'question': 'Silahkan naik ke Lantai 3:',
+      'answers': {
+        'Baik terimakasih':
+            'https://videos.pexels.com/video-files/4065222/4065222-hd_1080_2048_25fps.mp4',
       },
       'isFinal': true,
     },
@@ -57,9 +74,9 @@ class VideoPlaylistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Virtual Assistant Video Playlist'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Virtual Assistant Video Playlist'),
+      // ),
       body: VideoPlaylistWidget(videoMap: videoMap),
     );
   }

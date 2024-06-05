@@ -38,6 +38,7 @@ dependencies:
   provider: ^6.1.2
   chewie: ^1.8.1
   http: ^1.2.1
+  dio: ^5.4.3+1
 
 dev_dependencies:
   flutter_test:
