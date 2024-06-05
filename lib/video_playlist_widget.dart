@@ -107,6 +107,9 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
         Uri.parse(_googleSheetUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+              "POST, GET, OPTIONS, PUT, DELETE, HEAD",
         },
         body: jsonEncode(<String, dynamic>{
           'choices': _choices,

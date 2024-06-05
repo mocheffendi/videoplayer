@@ -54320,7 +54320,7 @@ k=t.N
 j=t.z
 A.nS(B.b8.wb(A.ai(["choices",l],k,j),null))
 i=A.e6("https://script.google.com/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec")
-h=A.ai(["Content-Type","application/json; charset=UTF-8"],k,k)
+h=A.ai(["Content-Type","application/json; charset=UTF-8","Access-Control-Allow-Origin","*","Access-Control-Allow-Methods","POST, GET, OPTIONS, PUT, DELETE, HEAD"],k,k)
 s=6
 return A.Q(A.ame(i,B.b8.wb(A.ai(["choices",l],k,j),null),h),$async$po)
 case 6:n=b
