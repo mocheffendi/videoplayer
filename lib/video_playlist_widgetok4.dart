@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class VideoPlaylistWidget extends StatefulWidget {
-  final Map<String, Map<String, dynamic>> videoMap;
+  final Map<String, Map<String, String>> videoMap;
 
   const VideoPlaylistWidget({super.key, required this.videoMap});
 
@@ -18,9 +14,6 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
   late VideoPlayerController _videoPlayerController;
   String? _currentVideoUrl;
   bool _isLoading = true;
-  final List<String> _choices = [];
-  final String _googleSheetUrl =
-      'https://script.google.com/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec'; // Replace with your Google Apps Script URL
 
   @override
   void initState() {
@@ -45,41 +38,10 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
     _videoPlayerController.dispose();
   }
 
-  Future<void> _submitChoices() async {
-    try {
-      final response = await http.post(
-        Uri.parse(_googleSheetUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'choices': _choices,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        // Successfully sent data to Google Sheets
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Choices submitted successfully!')));
-      } else {
-        // Failed to send data to Google Sheets
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to submit choices.')));
-      }
-    } catch (e) {
-      // Error occurred while sending data to Google Sheets
-      log('$e');
-
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error submitting choices: $e')));
-    }
-  }
-
-  void _loadNextVideo(String url, String choice) {
+  void _loadNextVideo(String url) {
     setState(() {
       _isLoading = true;
       _disposePlayer();
-      _choices.add(choice);
       _initializePlayer(url, autoPlay: true);
       _currentVideoUrl = url;
     });
@@ -111,29 +73,22 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ChatBubble(
-                  text: widget.videoMap[_currentVideoUrl]!['question'],
+                const ChatBubble(
+                  text:
+                      'Selamat Datang di kantor MSA, saya Hanny, virtual assiisten bapak Lesley, ada yang bisa saya bantu?',
                 ),
-                ...widget.videoMap[_currentVideoUrl]!['answers'].keys
-                    .map((option) {
+                ...widget.videoMap[_currentVideoUrl]!.keys.map((option) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        String nextUrl = widget
-                            .videoMap[_currentVideoUrl]!['answers'][option]!;
-                        bool isFinal = widget.videoMap[nextUrl]!['isFinal'];
-                        if (isFinal) {
-                          _choices.add(option);
-                          _submitChoices();
-                        } else {
-                          _loadNextVideo(nextUrl, option);
-                        }
+                        _loadNextVideo(
+                            widget.videoMap[_currentVideoUrl]![option]!);
                       },
                       child: Text(option),
                     ),
                   );
-                }).toList(),
+                })
               ],
             ),
           ),
