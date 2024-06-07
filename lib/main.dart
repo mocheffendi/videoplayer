@@ -62,6 +62,15 @@ class VideoPlaylistScreen extends StatelessWidget {
         {
       'question': 'Silahkan naik ke Lantai 3:',
       'answers': {
+        'Submit':
+            'https://videos.pexels.com/video-files/20770858/20770858-hd_1080_1920_30fps.mp4',
+      },
+      'isFinal': false,
+    },
+    'https://videos.pexels.com/video-files/20770858/20770858-hd_1080_1920_30fps.mp4':
+        {
+      'question': 'Silahkan naik ke Lantai 3:',
+      'answers': {
         'Baik terimakasih':
             'https://videos.pexels.com/video-files/4065222/4065222-hd_1080_2048_25fps.mp4',
       },

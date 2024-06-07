@@ -18,7 +18,7 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
   late VideoPlayerController _videoPlayerController;
   String? _currentVideoUrl;
   bool _isLoading = true;
-  final List<String> _choices = [];
+  List<String> _choices = [];
   final String _googleSheetUrl =
       'https://script.google.com/macros/s/AKfycbxqBrSvyWCjHpAnThfwOd0tsE4hdCm1Bm9-HJO2Gahd52RedsilUTczeqzS6TXGGzv0/exec'; // Replace with your Google Apps Script URL
 
@@ -188,6 +188,8 @@ class _VideoPlaylistWidgetState extends State<VideoPlaylistWidget> {
                         if (isFinal) {
                           _choices.add(option);
                           _submitChoices();
+                          _loadNextVideo(nextUrl, option);
+                          _choices = [];
                         } else {
                           _loadNextVideo(nextUrl, option);
                         }
